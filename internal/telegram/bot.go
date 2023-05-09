@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/geogreck/halaijibot/internal/storage"
 	"github.com/go-telegram/bot"
 	"go.uber.org/zap"
 )
@@ -20,6 +21,7 @@ type Bot interface {
 type tgbot struct {
 	b      *bot.Bot
 	logger *zap.Logger
+	db     storage.Storage
 }
 
 func New(logger *zap.Logger) (Bot, error) {
@@ -39,9 +41,15 @@ func New(logger *zap.Logger) (Bot, error) {
 		return &tgbot{}, err
 	}
 
+	db, err := storage.New(logger)
+	if err != nil {
+		logger.Error("failed to create bolt storage", zap.Error(err))
+	}
+
 	tgb := &tgbot{
 		b:      b,
 		logger: logger,
+		db:     db,
 	}
 
 	hookparams := &bot.SetWebhookParams{
@@ -54,7 +62,7 @@ func New(logger *zap.Logger) (Bot, error) {
 
 	tgb.RegisterHandler("/echo", EchoHandler)
 	tgb.RegisterHandler("/context", ContextHandler)
-	tgb.RegisterHandler("/rate", RaitingHandler)
+	tgb.RegisterHandler("/rate", tgb.RaitingHandler)
 
 	return tgb, nil
 }

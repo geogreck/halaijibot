@@ -3,6 +3,8 @@ package telegram
 import (
 	"context"
 	"math/rand"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/go-telegram/bot"
@@ -38,13 +40,62 @@ func ContextHandler(ctx context.Context, b *bot.Bot, update *models.Update) {
 	}
 }
 
-func RaitingHandler(ctx context.Context, b *bot.Bot, update *models.Update) {
-	if update.Message.From.Username == "SlavaYourWarrior" || update.Message.From.Username == "geogreck" {
+func (tgb *tgbot) RaitingHandler(ctx context.Context, b *bot.Bot, update *models.Update) {
+	if update.Message.From.Username == "SlavaYourWarrior" {
 		b.SendMessage(ctx, &bot.SendMessageParams{
 			ChatID:           update.Message.Chat.ID,
 			Text:             "Слава кыш",
 			ReplyToMessageID: update.Message.ID,
 		})
+		return
 	}
-	// msg := update.Message.Text[len("/rate"):]
+
+	msg := update.Message.Text[len("/rate")+1:]
+	words := strings.Split(msg, " ")
+	if len(words) < 2 {
+		b.SendMessage(ctx, &bot.SendMessageParams{
+			ChatID:           update.Message.Chat.ID,
+			Text:             "Неверный запрос",
+			ReplyToMessageID: update.Message.ID,
+		})
+		return
+	}
+
+	if words[0][0] != '@' || len(words[0]) == 1 {
+		b.SendMessage(ctx, &bot.SendMessageParams{
+			ChatID:           update.Message.Chat.ID,
+			Text:             "Неверный никнейм",
+			ReplyToMessageID: update.Message.ID,
+		})
+		return
+	}
+
+	username := words[0][1:]
+
+	incStr := words[1]
+	inc, err := strconv.Atoi(incStr)
+	if err != nil {
+		b.SendMessage(ctx, &bot.SendMessageParams{
+			ChatID:           update.Message.Chat.ID,
+			Text:             "Неверное значение дельты рейтинга",
+			ReplyToMessageID: update.Message.ID,
+		})
+		return
+	}
+
+	val, err := tgb.db.ChangeRaiting(username, inc)
+	if err != nil {
+		b.SendMessage(ctx, &bot.SendMessageParams{
+			ChatID:           update.Message.Chat.ID,
+			Text:             "Ошибка: " + err.Error(),
+			ReplyToMessageID: update.Message.ID,
+		})
+		return
+	}
+
+	b.SendMessage(ctx, &bot.SendMessageParams{
+		ChatID:           update.Message.Chat.ID,
+		Text:             "Новый рейтинг пользователя " + username + " " + strconv.Itoa(val),
+		ReplyToMessageID: update.Message.ID,
+	})
 }
