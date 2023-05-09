@@ -52,6 +52,7 @@ func (st *storage) ChangeRaiting(username string, inc int) (int, error) {
 		v := b.Get([]byte(username))
 		if v == nil {
 			b.Put([]byte(username), []byte(strconv.Itoa(defaultRaiting+inc)))
+			i = defaultRaiting + inc
 			return nil
 		}
 		num, err := strconv.Atoi(string(v))
