@@ -30,6 +30,7 @@ func New(logger *zap.Logger) (Bot, error) {
 
 	opts := []bot.Option{
 		bot.WithDefaultHandler(DefaultHandler),
+		bot.WithDebug(),
 	}
 
 	b, err := bot.New(token, opts...)
