@@ -2,6 +2,7 @@ package telegram
 
 import (
 	"context"
+	"strings"
 
 	"github.com/go-telegram/bot"
 	"github.com/go-telegram/bot/models"
@@ -15,8 +16,10 @@ func DefaultHandler(ctx context.Context, b *bot.Bot, update *models.Update) {
 }
 
 func EchoHandler(ctx context.Context, b *bot.Bot, update *models.Update) {
+	ind := strings.Index("/echo", update.Message.Text)
 	b.SendMessage(ctx, &bot.SendMessageParams{
-		ChatID: update.Message.Chat.ID,
-		Text:   update.Message.Text,
+		ChatID:           update.Message.Chat.ID,
+		Text:             update.Message.Text[ind:],
+		ReplyToMessageID: update.Message.ID,
 	})
 }
