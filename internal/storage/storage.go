@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"fmt"
 	"strconv"
 
 	bolt "go.etcd.io/bbolt"
@@ -58,6 +59,7 @@ func (st *storage) ChangeRaiting(username string, inc int) (int, error) {
 			st.logger.Error("Corrupted raiting value", zap.String("user", username), zap.ByteString("data", v))
 			return err
 		}
+		fmt.Println(num, inc)
 		i = num + inc
 		return b.Put([]byte(username), []byte([]byte(strconv.Itoa(num+inc))))
 	})
