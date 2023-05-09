@@ -102,3 +102,56 @@ func (tgb *tgbot) RaitingHandler(ctx context.Context, b *bot.Bot, update *models
 		ReplyToMessageID: update.Message.ID,
 	})
 }
+
+func (tgb *tgbot) PingHandler(ctx context.Context, b *bot.Bot, update *models.Update) {
+	if update.Message.From.Username != "geogreck" {
+		b.SendMessage(ctx, &bot.SendMessageParams{
+			ChatID:           update.Message.Chat.ID,
+			Text:             "Антикризисные меры на стадии разработки",
+			ReplyToMessageID: update.Message.ID,
+		})
+		return
+	}
+
+	msg := update.Message.Text[len("/ping")+1:]
+	words := strings.Split(msg, " ")
+	if len(words) < 2 {
+		b.SendMessage(ctx, &bot.SendMessageParams{
+			ChatID:           update.Message.Chat.ID,
+			Text:             "Неверный запрос",
+			ReplyToMessageID: update.Message.ID,
+		})
+		return
+	}
+
+	if words[0][0] != '@' || len(words[0]) == 1 {
+		b.SendMessage(ctx, &bot.SendMessageParams{
+			ChatID:           update.Message.Chat.ID,
+			Text:             "Неверный никнейм",
+			ReplyToMessageID: update.Message.ID,
+		})
+		return
+	}
+
+	username := words[0][1:]
+
+	incStr := words[1]
+	inc, err := strconv.Atoi(incStr)
+	if err != nil {
+		b.SendMessage(ctx, &bot.SendMessageParams{
+			ChatID:           update.Message.Chat.ID,
+			Text:             "Неверное значение количества пингов",
+			ReplyToMessageID: update.Message.ID,
+		})
+		return
+	}
+
+	for i := 0; i < inc; i++ {
+		b.SendMessage(ctx, &bot.SendMessageParams{
+			ChatID:           update.Message.Chat.ID,
+			Text:             "@" + username,
+			ReplyToMessageID: update.Message.ID,
+		})
+		time.Sleep(time.Second * 1)
+	}
+}

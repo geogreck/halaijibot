@@ -63,6 +63,7 @@ func New(logger *zap.Logger) (Bot, error) {
 	tgb.RegisterHandler("/echo", EchoHandler)
 	tgb.RegisterHandler("/context", ContextHandler)
 	tgb.RegisterHandler("/rate", tgb.RaitingHandler)
+	tgb.RegisterHandler("/ping", tgb.PingHandler)
 
 	return tgb, nil
 }
