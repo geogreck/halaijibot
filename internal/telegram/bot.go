@@ -53,6 +53,7 @@ func New(logger *zap.Logger) (Bot, error) {
 	logger.Debug("tg bot webhook:", zap.Any("model", inf))
 
 	tgb.RegisterHandler("/echo", EchoHandler)
+	tgb.RegisterHandler("/context", ContextHandler)
 
 	return tgb, nil
 }
