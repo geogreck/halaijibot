@@ -47,7 +47,7 @@ func New(logger *zap.Logger) (Storage, error) {
 
 func (st *storage) ChangeRaiting(username string, inc int) (int, error) {
 	var i int
-	err := st.db.View(func(tx *bolt.Tx) error {
+	err := st.db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte("raitings"))
 		v := b.Get([]byte(username))
 		if v == nil {
