@@ -44,6 +44,11 @@ func New(logger *zap.Logger) (Bot, error) {
 		logger: logger,
 	}
 
+	hookparams := &bot.SetWebhookParams{
+		URL: "bot.grechkogv.ru",
+	}
+	b.SetWebhook(context.Background(), hookparams)
+
 	inf, _ := b.GetWebhookInfo(context.Background())
 	logger.Debug("tg bot webhook:", zap.Any("model", inf))
 
