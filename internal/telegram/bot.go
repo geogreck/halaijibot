@@ -28,7 +28,9 @@ func New(logger *zap.Logger) (Bot, error) {
 		return &tgbot{}, errors.New("no api token specified")
 	}
 
-	opts := []bot.Option{}
+	opts := []bot.Option{
+		bot.WithDefaultHandler(DefaultHandler),
+	}
 
 	b, err := bot.New(token, opts...)
 
