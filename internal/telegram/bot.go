@@ -70,5 +70,5 @@ func (b *tgbot) WebhookHandler() http.HandlerFunc {
 }
 
 func (b *tgbot) RegisterHandler(pattern string, handler bot.HandlerFunc) {
-	b.b.RegisterHandler(bot.HandlerTypeMessageText, pattern, bot.MatchTypeExact, handler)
+	b.b.RegisterHandler(bot.HandlerTypeMessageText, pattern, bot.MatchTypePrefix, handler)
 }
