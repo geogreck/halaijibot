@@ -54,6 +54,7 @@ func New(logger *zap.Logger) (Bot, error) {
 
 	tgb.RegisterHandler("/echo", EchoHandler)
 	tgb.RegisterHandler("/context", ContextHandler)
+	tgb.RegisterHandler("/rate", RaitingHandler)
 
 	return tgb, nil
 }

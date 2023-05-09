@@ -37,3 +37,14 @@ func ContextHandler(ctx context.Context, b *bot.Bot, update *models.Update) {
 		})
 	}
 }
+
+func RaitingHandler(ctx context.Context, b *bot.Bot, update *models.Update) {
+	if update.Message.From.Username == "SlavaYourWarrior" || update.Message.From.Username == "geogreck" {
+		b.SendMessage(ctx, &bot.SendMessageParams{
+			ChatID:           update.Message.Chat.ID,
+			Text:             "Слава кыш",
+			ReplyToMessageID: update.Message.ID,
+		})
+	}
+	// msg := update.Message.Text[len("/rate"):]
+}
