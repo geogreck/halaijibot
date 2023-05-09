@@ -44,6 +44,9 @@ func New(logger *zap.Logger) (Bot, error) {
 		logger: logger,
 	}
 
+	inf, _ := b.GetWebhookInfo(context.Background())
+	logger.Debug("tg bot webhook:", zap.Any("model", inf))
+
 	tgb.RegisterHandler("/echo", EchoHandler)
 
 	return tgb, nil

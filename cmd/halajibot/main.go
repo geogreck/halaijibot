@@ -29,5 +29,5 @@ func main() {
 	logger.Info("Started webhook")
 
 	logger.Info("Starting server")
-	http.ListenAndServe(":8080", bot.WebhookHandler())
+	http.ListenAndServe("0.0.0.0:8080", bot.WebhookHandler())
 }
