@@ -19,6 +19,9 @@ func DefaultHandler(ctx context.Context, b *bot.Bot, update *models.Update) {
 }
 
 func EchoHandler(ctx context.Context, b *bot.Bot, update *models.Update) {
+	if len(update.Message.Text) < len("/echo")+1 {
+		return
+	}
 	b.SendMessage(ctx, &bot.SendMessageParams{
 		ChatID: update.Message.Chat.ID,
 		Text:   update.Message.Text[len("/echo")+1:],
