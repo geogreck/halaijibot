@@ -20,7 +20,7 @@ type storage struct {
 }
 
 func New(logger *zap.Logger) (Storage, error) {
-	db, err := bolt.Open("raitings.db", 0666, nil)
+	db, err := bolt.Open("/storage/raitings.db", 0666, nil)
 	if err != nil {
 		return nil, err
 	}

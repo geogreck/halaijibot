@@ -11,3 +11,5 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
+    volumes:
+      - "./storage:/storage"
