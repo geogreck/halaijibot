@@ -6,7 +6,7 @@ build:
 	DOCKER_BUILDKIT=1 docker build -t backend .
 
 .PHONY: run
-run: build
+run:
 	docker compose -f docker-compose.yml up -d --build backend
 
 .PHONY: lint

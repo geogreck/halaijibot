@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/geogreck/halaijibot/internal/storage"
 	"github.com/go-telegram/bot"
@@ -64,6 +65,8 @@ func New(logger *zap.Logger) (Bot, error) {
 	tgb.RegisterHandler("/context", ContextHandler)
 	tgb.RegisterHandler("/rate", tgb.RaitingHandler)
 	tgb.RegisterHandler("/ping", tgb.PingHandler)
+
+	tgb.RunServerDaemon(context.Background(), "158.160.100.125:25565", time.Minute, "-909265151")
 
 	return tgb, nil
 }
