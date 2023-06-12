@@ -66,7 +66,7 @@ func New(logger *zap.Logger) (Bot, error) {
 	tgb.RegisterHandler("/rate", tgb.RaitingHandler)
 	tgb.RegisterHandler("/ping", tgb.PingHandler)
 
-	tgb.RunServerDaemon(context.Background(), "158.160.100.125:25565", time.Minute, "-909265151")
+	tgb.RunServerDaemon(context.Background(), "158.160.100.125:25565", time.Minute*11/2, "-909265151")
 
 	return tgb, nil
 }
